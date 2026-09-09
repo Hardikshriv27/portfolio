@@ -4465,44 +4465,55 @@
         (function initExpModal() {
           const btn = document.getElementById("expLetterBtn");
           const modal = document.getElementById("expModal");
+
           if (!btn || !modal) return;
+
           const closeBtn = document.getElementById("expModalClose");
           const closeBtn2 = document.getElementById("expModalCloseBtn");
-          const wrap = document.getElementById("pdfPreviewWrap");
           const frame = document.getElementById("expPdfFrame");
-          let lastFocused = null;
 
-          let loaded = false;
+          let lastFocused = null;
 
           function open() {
             lastFocused = document.activeElement;
-            wrap.classList.remove("iframe-failed");
-            loaded = false;
-            frame.src = "experience.pdf#page=1&view=FitH";
+
             modal.classList.add("open");
             document.body.style.overflow = "hidden";
+
+            /*
+             * Always load the PDF directly.
+             * Do NOT use a timeout/load-event check here.
+             * PDF iframe load events are unreliable across browsers,
+             * especially when the browser's built-in PDF viewer is involved.
+             */
+            frame.src = "experience.pdf#page=1&view=FitH";
+
             closeBtn.focus();
-            setTimeout(() => {
-              if (!loaded) wrap.classList.add("iframe-failed");
-            }, 2500);
           }
+
           function close() {
             modal.classList.remove("open");
             document.body.style.overflow = "";
-            if (lastFocused) lastFocused.focus();
+
+            if (lastFocused) {
+              lastFocused.focus();
+            }
           }
+
           btn.addEventListener("click", open);
           closeBtn.addEventListener("click", close);
           closeBtn2.addEventListener("click", close);
+
           modal.addEventListener("click", (e) => {
-            if (e.target === modal) close();
-          });
-          document.addEventListener("keydown", (e) => {
-            if (modal.classList.contains("open") && e.key === "Escape") close();
+            if (e.target === modal) {
+              close();
+            }
           });
 
-          frame.addEventListener("load", () => {
-            loaded = true;
+          document.addEventListener("keydown", (e) => {
+            if (modal.classList.contains("open") && e.key === "Escape") {
+              close();
+            }
           });
         })();
 
