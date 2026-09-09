@@ -4472,11 +4472,19 @@
           const frame = document.getElementById("expPdfFrame");
           let lastFocused = null;
 
+          let loaded = false;
+
           function open() {
             lastFocused = document.activeElement;
+            wrap.classList.remove("iframe-failed");
+            loaded = false;
+            frame.src = "experience.pdf#page=1&view=FitH";
             modal.classList.add("open");
             document.body.style.overflow = "hidden";
             closeBtn.focus();
+            setTimeout(() => {
+              if (!loaded) wrap.classList.add("iframe-failed");
+            }, 2500);
           }
           function close() {
             modal.classList.remove("open");
@@ -4493,14 +4501,9 @@
             if (modal.classList.contains("open") && e.key === "Escape") close();
           });
 
-          // fallback if the browser can't render the PDF inline
-          let loaded = false;
           frame.addEventListener("load", () => {
             loaded = true;
           });
-          setTimeout(() => {
-            if (!loaded) wrap.classList.add("iframe-failed");
-          }, 2500);
         })();
 
         /* ================= CERTIFICATE MODAL ================= */
