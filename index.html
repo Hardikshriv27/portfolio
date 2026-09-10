@@ -1834,7 +1834,7 @@
         background: var(--bg-elev);
         border: 1px solid var(--border-hi);
         border-radius: 18px;
-        max-width: 720px;
+        max-width: 900px;
         width: 100%;
         max-height: 88vh;
         overflow-y: auto;
@@ -1894,6 +1894,16 @@
         max-height: 60vh;
         object-fit: contain;
         border: none;
+        display: block;
+      }
+
+      /* Certificate PDFs use the browser's native PDF viewer. */
+      #certModalFrame {
+        width: 100%;
+        height: 60vh;
+        min-height: 360px;
+        background: #fff;
+        border: 0;
         display: block;
       }
       .modal-nav-btn {
@@ -3967,7 +3977,12 @@
           >
             ‹
           </button>
-          <img id="certModalImg" src="" alt="" />
+          <iframe
+            id="certModalFrame"
+            title="Certificate preview"
+            src=""
+            loading="lazy"
+          ></iframe>
           <button
             class="modal-nav-btn next"
             id="certNext"
@@ -4524,33 +4539,33 @@
             org: "Deloitte (via Forage)",
             date: "December 23, 2025",
             id: "FkwJpXei22qg54vXN",
-            img: "CERT_IMG_0",
+            pdf: "certificates/deloitte-data-analytics-job-simulation.pdf",
           },
           {
             title: "Innovating with Google Cloud AI",
             org: "Google",
             date: "December 23, 2025",
             id: "9628517",
-            img: "CERT_IMG_1",
+            pdf: "certificates/google-cloud-ai.pdf",
           },
           {
             title: "Introduction to Generative AI",
             org: "Google",
             date: "December 23, 2025",
             id: "9628560",
-            img: "CERT_IMG_2",
+            pdf: "certificates/google-generative-ai.pdf",
           },
           {
             title: "Introduction to Software Testing",
             org: "Simplilearn SkillUp",
             date: "May 6, 2025",
             id: "8306658",
-            img: "CERT_IMG_3",
+            pdf: "certificates/simplilearn-software-testing.pdf",
           },
         ];
 
         const certModal = document.getElementById("certModal");
-        const certModalImg = document.getElementById("certModalImg");
+        const certModalFrame = document.getElementById("certModalFrame");
         const certModalTitle = document.getElementById("certModalTitle");
         const certModalOrg = document.getElementById("certModalOrg");
         const certModalDate = document.getElementById("certModalDate");
@@ -4563,15 +4578,15 @@
         function renderCert(i) {
           certIndex = (i + certs.length) % certs.length;
           const c = certs[certIndex];
-          certModalImg.src = c.img;
-          certModalImg.alt = c.title + " certificate preview";
+          certModalFrame.src = c.pdf + "#page=1&view=FitH";
+          certModalFrame.title = c.title + " certificate preview";
           certModalTitle.textContent = c.title;
           certModalOrg.textContent = c.org;
           certModalDate.textContent = c.date;
           certModalId.textContent = c.id;
-          certModalOpen.href = c.img;
-          certModalDownload.href = c.img;
-          certModalDownload.download = c.title.replace(/\s+/g, "_") + ".jpg";
+          certModalOpen.href = c.pdf;
+          certModalDownload.href = c.pdf;
+          certModalDownload.download = c.title.replace(/\s+/g, "_") + ".pdf";
         }
 
         function openCertModal(i) {
